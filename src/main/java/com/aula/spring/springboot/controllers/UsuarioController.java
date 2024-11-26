@@ -3,6 +3,8 @@ package com.aula.spring.springboot.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +25,9 @@ public class UsuarioController {
 	private UsuarioService service;
 	
 	@GetMapping
-	public List<Usuario> procuraTodos(){
-		return service.procuraTodos();
+	public ResponseEntity<List<Usuario>> procuraTodos(){
+		List<Usuario> listaDeUsuario= service.procuraTodos();
+		return ResponseEntity.status(HttpStatus.OK).body(listaDeUsuario);
 		
 	}
 	
@@ -36,10 +39,10 @@ public class UsuarioController {
 	}
 	
 	@PostMapping
-	public String adicionarUsuario(@RequestBody Usuario usuario) {
+	public ResponseEntity<String> adicionarUsuario(@RequestBody Usuario usuario) {
 		
 		String response = service.adicionarUsuario(usuario);
-		return response;
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		
 	}
 	
@@ -52,8 +55,9 @@ public class UsuarioController {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public void excluirUsuario( @PathVariable Integer id) {
+	public ResponseEntity <Void> excluirUsuario( @PathVariable Integer id) {
 		service.excluirUsuario(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		
 	}
 	
